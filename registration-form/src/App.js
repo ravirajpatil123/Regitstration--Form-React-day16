@@ -1,66 +1,87 @@
-import {useState } from "react";
+import { useState } from "react";
 function App() {
   return (
     <>
-      <h1>Login</h1>
-      <MyLogIn />
+      <h1>Registraion</h1>
+      <MyRegistration />
     </>
   );
 }
 
-function MyLogIn() {
-  let [user ,setUser] = useState[{user:"",password:""}];
+function MyRegistration() {
+  let [user, setUser] =
+    useState({ username: "", password: "", email: "", mobile: "" });
 
-  let handleUsernameAction = (e) => {
-  let newuser ={...user,username:e.target.value};
-  setUser(newuser);
-  }
-
-  let handlePasswordAction = (e) => {
-    let newuser ={...user,password:e.target.value};
+  let handleChangeUsernameAction = (e) => {
+    let newuser = { ...user, username: e.target.value };
     setUser(newuser);
-    }
-  let loginAction =async () =>{
-    let url= `http://localhost:4000/adduser?username=${user.username}&password=${user.password}`;
-    await fetch(url);
-
-   let newuser ={
-    username:"",
-    password:""
-   }
-setUser(newuser);
-
-    setUser()
-
- }
+  };
+  let handleChangePasswordAction = (e) => {
+    let newuser = { ...user, password: e.target.value };
+    setUser(newuser);
+  };
+  let handleChangeEmailAction = (e) => {
+    let newuser = { ...user, email: e.target.value };
+    setUser(newuser);
+  };
+  let handleChangeMobileAction = (e) => {
+    let newuser = { ...user, mobile: e.target.value };
+    setUser(newuser);
+  };
+  let registerAction = async () => {
+    let url =
+      `http://localhost:4000/adduser?username=${user.username}&password=${user.password}&email=${user.email}&mobile=${user.mobile}`;
+      await fetch(url);
+    let newuser = { 
+      username: "",
+      password: "",
+      email: "",
+      mobile: "",
+    };
+    setUser(newuser);
+    
+  };
   return (
     <>
       <input
-        className="form-control mb-1"
-        style={{ borderBlockColor: "black" }}
         type="text"
+        className="form-control"
         placeholder="Enter Username"
-        onChange={handleUsernameAction}
         value={user.username}
-        
-      />
-      <input
-        className="form-control mb-1"
-        style={{ borderBlockColor: "black" }}
-        type="password"
-        placeholder="Enter password"
-        onChange={handlePasswordAction}
-        value={user.password}
+        onChange={handleChangeUsernameAction}
       />
 
       <input
-        className="form-control bg-danger text-light fw-bold "
+        type="password"
+        className="form-control"
+        placeholder="Enter Password"
+        value={user.password}
+        onChange={handleChangePasswordAction}
+      />
+
+      <input
+        type="email"
+        className="form-control"
+        placeholder="Enter email"
+        value={user.email}
+        onChange={handleChangeEmailAction}
+      />
+
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Enter Mobile"
+        value={user.mobile}
+        onChange={handleChangeMobileAction}
+      />
+
+      <input
         type="button"
-        value="Login"
-       onClick={loginAction}
+        className="w-100"
+        value="Register"
+        onClick={registerAction}
       />
     </>
   );
 }
-
 export default App;
