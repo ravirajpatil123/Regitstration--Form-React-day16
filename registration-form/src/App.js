@@ -1,66 +1,64 @@
-import { useState } from "react";
-
+import {useState } from "react";
 function App() {
   return (
     <>
-      <h1>My Todo</h1>
-      <MyTodo />
+      <h1>Login</h1>
+      <MyLogIn />
     </>
   );
 }
 
-function MyTodo() {
-  let [sucessBox, setSuccessBox] = useState(false);
-  let [todo, setTodo] = useState({ task: "", description: "" });
+function MyLogIn() {
+  let [user ,setUser] = useState[{user:"",password:""}];
 
-  let handleChnageTaskAction = (e) => {
-    let newTodo = { ...todo, task: e.target.value };
-    setTodo(newTodo);
-  };
+  let handleUsernameAction = (e) => {
+  let newuser ={...user,username:e.target.value};
+  setUser(newuser);
+  }
 
-  let handleChangeDescriptionAction = (e) => {
-    // console.log(e.target);
-    let newTodo = { ...todo, description: e.target.value };
-    setTodo(newTodo);
-  };
-
-  let addTodoAction = async () => {
-    console.log(todo);
-
-    let url = `http://localhost:4000/addtodo?task=${todo.task}&description=${todo.description}`;
+  let handlePasswordAction = (e) => {
+    let newuser ={...user,password:e.target.value};
+    setUser(newuser);
+    }
+  let loginAction =async () =>{
+    let url= `http://localhost:4000/adduser?username=${user.username}&password=${user.password}`;
     await fetch(url);
 
-    // clear the box
-    let newtodo = { task: "", description: "" };
-    setTodo(newtodo);
+   let newuser ={
+    username:"",
+    password:""
+   }
+setUser(newuser);
 
-    setSuccessBox(true);
-  };
+    setUser()
 
+ }
   return (
     <>
       <input
-        className="form-control"
+        className="form-control mb-1"
+        style={{ borderBlockColor: "black" }}
         type="text"
-        placeholder="Enter task"
-        value={todo.task}
-        onChange={handleChnageTaskAction}
+        placeholder="Enter Username"
+        onChange={handleUsernameAction}
+        value={user.username}
+        
+      />
+      <input
+        className="form-control mb-1"
+        style={{ borderBlockColor: "black" }}
+        type="password"
+        placeholder="Enter password"
+        onChange={handlePasswordAction}
+        value={user.password}
       />
 
-      <textarea
-        className="form-control"
-        cols="30"
-        rows="3"
-        placeholder="Enter Description"
-        value={todo.description}
-        onChange={handleChangeDescriptionAction}
-      ></textarea>
-
-      <input type="button" value="Add Todo" onClick={addTodoAction} />
-
-      {sucessBox && (
-        <div className="alert alert-success">Operation Success</div>
-      )}
+      <input
+        className="form-control bg-danger text-light fw-bold "
+        type="button"
+        value="Login"
+       onClick={loginAction}
+      />
     </>
   );
 }
