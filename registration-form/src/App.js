@@ -1,85 +1,68 @@
 import { useState } from "react";
+
 function App() {
   return (
     <>
-      <h1>Registration</h1>
-      <MyRegistration />
+      <h1>My Todo</h1>
+      <MyTodo />
     </>
   );
 }
 
-function MyRegistration() {
-  let [user, setUser] =
-    useState[{ username: "", password: "", email: "", mobile: "" }];
+function MyTodo() {
+  let [sucessBox, setSuccessBox] = useState(false);
+  let [todo, setTodo] = useState({ task: "", description: "" });
 
-  let handleUsernameAction = (e) => {
-    let newuser = { ...user, username: e.target.value };
-    setUser(newuser);
+  let handleChnageTaskAction = (e) => {
+    let newTodo = { ...todo, task: e.target.value };
+    setTodo(newTodo);
   };
-  let handlePasswordAction = (e) => {
-    let newuser = { ...user, password: e.target.value };
-    setUser(newuser);
+
+  let handleChangeDescriptionAction = (e) => {
+    // console.log(e.target);
+    let newTodo = { ...todo, description: e.target.value };
+    setTodo(newTodo);
   };
-  let handleEmailAction = (e) => {
-    let newuser = { ...user, email: e.target.value };
-    setUser(newuser);
-  };
-  let handleMobileAction = (e) => {
-    let newuser = { ...user, mobile: e.target.value };
-    setUser(newuser);
-  };
-  let registerAction = async () => {
-    let url = `http://localhost:4000/adduser?username=${user.username}&password=${user.password}&email=${user.email}&mobile=${user.mobile}`;
+
+  let addTodoAction = async () => {
+    console.log(todo);
+
+    let url = `http://localhost:4000/addtodo?task=${todo.task}&description=${todo.description}`;
     await fetch(url);
-    let newuser = {
-      username: "",
-      password: "",
-      email: "",
-      mobile: "",
-    };
-    setUser(newuser);
+
+    // clear the box
+    let newtodo = { task: "", description: "" };
+    setTodo(newtodo);
+
+    setSuccessBox(true);
   };
+
   return (
     <>
       <input
-       className="form-control"
+        className="form-control"
         type="text"
-        placeholder="Enter Username"
-        value={user.username}
-        onChange={handleUsernameAction}
+        placeholder="Enter task"
+        value={todo.task}
+        onChange={handleChnageTaskAction}
       />
 
-      <input
-        type="password"
+      <textarea
         className="form-control"
-        placeholder="Enter Password"
-        value={user.password}
-        onChange={handlePasswordAction}
-      />
+        cols="30"
+        rows="3"
+        placeholder="Enter Description"
+        value={todo.description}
+        onChange={handleChangeDescriptionAction}
+      ></textarea>
 
-      <input
-        type="email"
-        className="form-control"
-        placeholder="Enter email"
-        value={user.email}
-        onChange={handleEmailAction}
-      />
+      <input type="button" value="Add Todo" onClick={addTodoAction} />
 
-      <input
-        type="text"
-        className="form-control"
-        placeholder="Enter Mobile"
-        value={user.mobile}
-        onChange={handleMobileAction}
-      />
-
-      <input
-        type="button"
-        className="w-100"
-        value="Register"
-        onClick={registerAction}
-      />
+      {sucessBox && (
+        <div className="alert alert-success">Operation Success</div>
+      )}
     </>
   );
 }
+
 export default App;
