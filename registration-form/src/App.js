@@ -4,13 +4,12 @@ import MyRegistration from "./pages/MyRegistration";
 import MyNavigationLinks from "./pages/MyNavigationLinks";
 import MyTodoList from "./pages/MyTodoList";
 
+
 function App() {
   return (
     <>
       <BrowserRouter>
         <MyNavigationLinks />
-        
-
         <Routes>
           {/** 1 Route means 1 Page */}
           <Route path="/" element={<h1>Hello</h1>} />
