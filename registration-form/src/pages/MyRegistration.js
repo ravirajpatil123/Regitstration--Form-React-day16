@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useRef,useState } from "react";
 
 function MyRegistration() {
+  let formRef= useRef();
   let [user, setUser] = useState({
     username: "",
     password: "",
@@ -30,6 +31,12 @@ function MyRegistration() {
 
   let registerAction = async () => {
     // BACKEND
+    formRef.current.classList.add("was-validated");
+    let formStatus=formRef.current.checkValidity();
+    if(!formStatus){
+      return;
+    }
+
     let url = `http://localhost:4000/adduser?username=${user.username}&password=${user.password}&email=${user.email}&mobile=${user.mobile}`;
     await fetch(url);
 
@@ -41,15 +48,18 @@ function MyRegistration() {
     };
     setUser(newuser);
   };
+  
 
   return (
     <>
+    <form ref={formRef} className="-validation">
       <input
         type="text"
         className="form-control"
         placeholder="Enter username"
         value={user.username}
         onChange={handlerUsernameAction}
+        required
       />
       <input
         type="password"
@@ -57,6 +67,7 @@ function MyRegistration() {
         placeholder="Enter password"
         value={user.password}
         onChange={handlerPasswordAction}
+        required
       />
       <input
         type="text"
@@ -64,6 +75,7 @@ function MyRegistration() {
         placeholder="Enter Email"
         value={user.email}
         onChange={handlerEmailAction}
+        required
       />
       <input
         type="text"
@@ -71,13 +83,16 @@ function MyRegistration() {
         placeholder="Enter mobile"
         value={user.mobile}
         onChange={handlerMobileAction}
+        required
       />
       <input
         type="button"
         value="Register"
         className="w-100"
         onClick={registerAction}
+        required
       />
+      </form>
     </>
   );
 }

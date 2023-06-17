@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useRef,useState } from "react";
 
 function MyTodo() {
+  let formRef=useRef();
   let [sucessBox, setSuccessBox] = useState(false);
   let [todo, setTodo] = useState({ task: "", description: "" });
 
@@ -17,6 +18,12 @@ function MyTodo() {
 
   let addTodoAction = async () => {
     console.log(todo);
+    console.log(todo);
+    formRef.current.classList.add("was-validated");
+    let formStatus=formRef.current.checkValidity();
+    if(!formStatus){
+      return;
+    }
 
     let url = `http://localhost:4000/addtodo?task=${todo.task}&description=${todo.description}`;
     await fetch(url);
@@ -33,12 +40,14 @@ function MyTodo() {
 
   return (
     <>
+    <form ref= {formRef} className="needs-validation">
       <input
         className="form-control"
         type="text"
         placeholder="Enter task"
         value={todo.task}
         onChange={handleChnageTaskAction}
+        required
       />
 
       <textarea
@@ -48,9 +57,11 @@ function MyTodo() {
         placeholder="Enter Description"
         value={todo.description}
         onChange={handleChangeDescriptionAction}
+        required
       ></textarea>
 
       <input type="button" value="Add Todo" onClick={addTodoAction} />
+      </form>
 
       {sucessBox && (
         <div className="alert alert-success">Operation Success</div>
